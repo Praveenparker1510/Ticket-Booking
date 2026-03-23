@@ -2,6 +2,6 @@
   "routes": [
     { "src": "/", "dest": "/Ticket_html.html" },
     { "src": "/seat-selection", "dest": "/seat_selection.html" },
-    { "src": "/passenger", "dest": "/passenger.html" }
+    { "src": "/Passenger", "dest": "/Passenger.html" }
   ]
 }
