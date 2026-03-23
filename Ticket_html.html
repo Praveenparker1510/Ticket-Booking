@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>V BUS - Bus Ticket Booking</title>
+
+<link rel="stylesheet" href="Ticket_css.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar">
+
+<div class="logo">
+EVOLVE TRAVELS
+</div>
+
+
+<div class="nav-buttons">
+<span class="phone">📞 +91 9080863897</span>
+<div class="menu-container">
+  <button class="menu-btn">☰ Menu</button>
+
+  <div class="dropdown-menu">
+    <a href="#home">Home</a>
+    <a href="search_html.html">Search Buses</a>
+    <a href="my_bookings.html">My Bookings</a>
+  </div>
+</div>
+
+</div>
+
+</header>
+
+<!-- BUS IMAGE SECTION -->
+
+<section class="bus-image">
+
+<img src="https://gst-contracts.s3.ap-southeast-1.amazonaws.com/uploads/bcc/cms/asset/avatar/421331/banner_Banner22.jpg" alt="Bus Image">
+
+</section>
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+<h1>Travel Smarter with <span>EVOLVE TRAVELS</span></h1>
+
+<p>
+Book bus tickets across 200+ routes. Comfortable, affordable, and reliable travel at your fingertips.
+</p>
+
+
+<!-- SEARCH BOX -->
+
+<div class="search-container">
+
+<div class="input-group">
+<i class="fa-solid fa-location-dot"></i>
+<select id="departure-city">
+  <option value="" disabled selected>Departure city</option>
+  <option value="Chennai">Chennai</option>
+  <option value="Bangalore">Bangalore</option>
+  <option value="Mumbai">Mumbai</option>
+  <option value="Delhi">Delhi</option>
+  <option value="Goa">Goa</option>
+  <option value="Hyderabad">Hyderabad</option>
+</select>
+
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-location-dot"></i>
+<select id="arrival-city">
+  <option value="" disabled selected>Arrival city</option>
+  <option value="Chennai">Chennai</option>
+  <option value="Bangalore">Bangalore</option>
+  <option value="Mumbai">Mumbai</option>
+  <option value="Delhi">Delhi</option>
+  <option value="Goa">Goa</option>
+  <option value="Hyderabad">Hyderabad</option>
+</select>
+</div>
+
+<div class="input-group">
+<i class="fa-solid fa-calendar"></i>
+<input id="travel-date" type="date">
+</div>
+
+<div class="input-group">
+  <i class="fa-solid fa-user"></i>
+  <select id="passenger-count">
+    <option value="" disabled selected>Passengers</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+</div>
+
+<button id="search-btn" class="search-btn" type="button">
+<i class="fa-solid fa-magnifying-glass"></i>
+Search
+</button>
+
+</div>
+
+</section>
+
+
+<!-- POPULAR ROUTES -->
+
+<section class="routes-section">
+
+<h2>Popular Routes</h2>
+
+<div class="routes">
+
+<div class="route-card">
+<h3>Chennai → Hyderabad</h3>
+<p>Telangana Express</p>
+<p>20:00 → 06:00</p>
+<span>₹1200</span>
+</div>
+
+<div class="route-card">
+<h3>Bangalore → Chennai</h3>
+<p>Southern Rider</p>
+<p>22:00 → 05:30</p>
+<span>₹950</span>
+</div>
+
+<div class="route-card">
+<h3>Mumbai → Bangalore</h3>
+<p>Western Metro Express</p>
+<p>19:00 → 09:00</p>
+<span>₹1800</span>
+</div>
+
+<div class="route-card">
+<h3>Delhi → Goa</h3>
+<p>Capital Coast Express</p>
+<p>15:00 → 18:00</p>
+<span>₹2800</span>
+</div>
+
+<div class="route-card">
+<h3>Goa → Mumbai</h3>
+<p>Urban Coast Cruiser</p>
+<p>20:30 → 06:30</p>
+<span>₹960</span>
+</div>
+
+<div class="route-card">
+<h3>Hyderabad → Chennai</h3>
+<p>CityLink South Coach</p>
+<p>20:30 → 06:30</p>
+<span>₹1180</span>
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- WHY CHOOSE -->
+
+<section class="features-section">
+
+<h2>Why Choose  EVOLVE TRAVELS?</h2>
+
+<div class="features">
+
+<div class="feature">
+
+<i class="fa-solid fa-shield-halved"></i>
+
+<h3>Safe Travel</h3>
+
+<p>Verified operators with safety ratings</p>
+
+</div>
+
+
+<div class="feature">
+
+<i class="fa-solid fa-clock"></i>
+
+<h3>On-Time Guarantee</h3>
+
+<p>95% on-time performance</p>
+
+</div>
+
+
+<div class="feature">
+
+<i class="fa-solid fa-location-dot"></i>
+
+<h3>Live Tracking</h3>
+
+<p>Track your bus in real-time</p>
+
+</div>
+
+
+<div class="feature">
+
+<i class="fa-solid fa-headset"></i>
+
+<h3>24/7 Support</h3>
+
+<p>Round the clock help</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+<div>
+<h1>500+</h1>
+<p>Routes</p>
+</div>
+
+<div>
+<h1>10M+</h1>
+<p>Happy Travelers</p>
+</div>
+
+<div>
+<h1>50+</h1>
+<p>Bus Operators</p>
+</div>
+
+<div>
+<h1>100+</h1>
+<p>Cities</p>
+</div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="footer-grid">
+
+<div>
+
+<h3>EVOLVE TRAVELS</h3>
+
+<p>
+Book bus tickets easily. Travel comfortably across the country with trusted operators.
+</p>
+
+</div>
+
+
+<div>
+
+<h3>Quick Links</h3>
+
+<p>Home</p>
+<p>Search Buses</p>
+<p>My Bookings</p>
+<p>About Us</p>
+
+</div>
+
+
+<div>
+
+<h3>Support</h3>
+
+<p>Help Center</p>
+<p>Cancellation Policy</p>
+<p>Refund Policy</p>
+<p>Terms & Conditions</p>
+
+</div>
+
+
+<div>
+
+<h3>Contact</h3>
+
+<p>044 - 5821 - 4605</p>
+<p>support@evolvetravels.com</p>
+<p>Mon-Sun, 24/7 Support</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+© 2026 EVOLVE TRAVELS. All rights reserved.
+</p>
+
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchBtn = document.getElementById("search-btn");
+    if (!searchBtn) return;
+
+    searchBtn.addEventListener("click", function() {
+      const dep = document.getElementById("departure-city").value.trim();
+      const arr = document.getElementById("arrival-city").value.trim();
+      const date = document.getElementById("travel-date").value;
+      const pass = document.getElementById("passenger-count").value || "1";
+
+      if (!dep || !arr) {
+        alert("Please enter both departure and arrival cities before searching.");
+        return;
+      }
+
+      const params = new URLSearchParams({ dep, arr, date, pass });
+      window.location.href = "search_html.html?" + params.toString();
+    });
+  });
+</script>
+
+<script src="Ticket_java.java"></script>
+
+</body>
+</html>
+
+<script>
+  const menuBtn = document.querySelector(".menu-btn");
+  const menuContainer = document.querySelector(".menu-container");
+
+  menuBtn.addEventListener("click", function () {
+    menuContainer.classList.toggle("active");
+  });
+
+  // close when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!menuContainer.contains(e.target)) {
+      menuContainer.classList.remove("active");
+    }
+  });
+
+</script>
