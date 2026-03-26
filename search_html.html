@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Search Buses</title>
+<link rel="stylesheet" href="Ticket_css.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+<div class="logo">EVOLVE TRAVELS</div>
+
+<div class="nav-buttons">
+
+  <span class="phone">📞 +91 9080863897</span>
+
+  <div class="menu-container">
+    <button class="menu-btn">☰ Menu</button>
+
+    <div class="dropdown-menu">
+      <a href="index.html">Home</a>
+      <a href="search_html.html">Search Buses</a>
+      <a href="my_bookings.html">My Bookings</a>
+    </div>
+  </div>
+
+</div>
+</div>
+</header>
+
+
+<!-- SEARCH BAR -->
+<div class="search-bar">
+<select id="departure-city">
+  <option value="" disabled selected>Departure city</option>
+  <option value="Chennai">Chennai</option>
+  <option value="Bangalore">Bangalore</option>
+  <option value="Mumbai">Mumbai</option>
+  <option value="Delhi">Delhi</option>
+  <option value="Goa">Goa</option>
+  <option value="Hyderabad">Hyderabad</option>
+</select>
+
+<select id="arrival-city">
+  <option value="" disabled selected>Arrival city</option>
+  <option value="Chennai">Chennai</option>
+  <option value="Bangalore">Bangalore</option>
+  <option value="Mumbai">Mumbai</option>
+  <option value="Delhi">Delhi</option>
+  <option value="Goa">Goa</option>
+  <option value="Hyderabad">Hyderabad</option>
+</select>
+<input id="travel-date" type="date">
+<select id="passenger-count">
+  <option value="" disabled selected>Passengers</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
+<button id="search-btn">Search</button>
+<button id="show-all-btn" type="button">Show All</button>
+</div>
+
+<div class="container">
+
+<div class="search-layout">
+
+<!-- FILTERS -->
+<div class="filters">
+
+<h3>Filters</h3>
+
+<h4>Sort By</h4>
+
+<button data-sort="lowest-price" onclick="sortBuses('lowest-price')">Lowest Price</button>
+<button data-sort="earliest-departure" onclick="sortBuses('earliest-departure')">Earliest Departure</button>
+<button data-sort="highest-rating" onclick="sortBuses('highest-rating')">Highest Rating</button>
+
+<h4>Bus Type</h4>
+
+<button data-type="All" onclick="filterBus('All')">All Types</button>
+<button data-type="AC Sleeper" onclick="filterBus('AC Sleeper')">AC Sleeper</button>
+<button data-type="AC Seater" onclick="filterBus('AC Seater')">AC Seater</button>
+<button data-type="Non AC Seater" onclick="filterBus('Non AC Seater')">Non AC Seater</button>
+<button data-type="Volvo AC" onclick="filterBus('Volvo AC')">Volvo AC</button>
+
+
+</div>
+
+<!-- BUS RESULTS -->
+<div class="bus-results">
+
+<div class="results-header">
+  <h2>All Buses</h2>
+  <span id="bus-count">0 buses found</span>
+</div>
+
+<div id="bus-list"></div>
+
+</div>
+
+</div>
+
+
+<!-- Inline JSON fallback (copy the full bus_booking_json.json content between braces here) -->
+<script id="bus-data-json" type="application/json">
+{
+"Chennai-Bangalore":[
+{"busName":"GreenLine Express","departure":"21:00","arrival":"05:30","price":950,"type":"Non AC Seater","rating":4.5,"seatsAvailable":18,"duration":"8h 30m"},
+{"busName":"KPN Deluxe","departure":"20:30","arrival":"05:00","price":1050,"type":"AC Sleeper","rating":4.3,"seatsAvailable":12,"duration":"8h 30m"},
+{"busName":"Parveen Royal","departure":"22:00","arrival":"06:00","price":1100,"type":"Volvo AC","rating":4.6,"seatsAvailable":10,"duration":"8h"},
+{"busName":"SRM Premium","departure":"21:30","arrival":"05:45","price":900,"type":"AC Seater","rating":4.2,"seatsAvailable":22,"duration":"8h 15m"},
+{"busName":"Rathimeena Elite","departure":"23:30","arrival":"06:45","price":990,"type":"AC Sleeper","rating":4.4,"seatsAvailable":16,"duration":"7h 15m"}
+],
+
+"Chennai-Goa":[
+{"busName":"Coastal Express","departure":"19:00","arrival":"09:00","price":1600,"type":"AC Seater","rating":4.3,"seatsAvailable":20,"duration":"14h"},
+{"busName":"BeachLine Travels","departure":"20:00","arrival":"10:30","price":1700,"type":"Non AC Seater","rating":4.4,"seatsAvailable":14,"duration":"14h 30m"},
+{"busName":"Konkan Rider","departure":"18:30","arrival":"08:30","price":1550,"type":"AC Sleeper","rating":4.2,"seatsAvailable":25,"duration":"14h"},
+{"busName":"Sunrise Coach","departure":"21:00","arrival":"11:00","price":1650,"type":"AC Sleeper","rating":4.1,"seatsAvailable":17,"duration":"14h"},
+{"busName":"WestCoast Deluxe","departure":"22:00","arrival":"12:00","price":1750,"type":"Volvo AC","rating":4.5,"seatsAvailable":11,"duration":"14h"}
+],
+
+"Chennai-Hyderabad":[
+{"busName":"Telangana Express","departure":"20:00","arrival":"06:00","price":1200,"type":"Non AC Seater","rating":4.1,"seatsAvailable":30,"duration":"10h"},
+{"busName":"Deccan Rider","departure":"21:00","arrival":"07:00","price":1250,"type":"AC Sleeper","rating":4.3,"seatsAvailable":18,"duration":"10h"},
+{"busName":"Royal Hyderabad","departure":"22:00","arrival":"08:00","price":1300,"type":"Volvo AC","rating":4.6,"seatsAvailable":9,"duration":"10h"},
+{"busName":"CityLink Travels","departure":"19:30","arrival":"05:30","price":1180,"type":"AC Seater","rating":4.2,"seatsAvailable":21,"duration":"10h"},
+{"busName":"CityStar Travels","departure":"21:45","arrival":"07:45","price":1290,"type":"AC Sleeper","rating":4.4,"seatsAvailable":15,"duration":"10h"}
+],
+
+"Chennai-Mumbai":[
+{"busName":"Western Star","departure":"18:00","arrival":"10:00","price":2000,"type":"Volvo AC","rating":4.4,"seatsAvailable":14,"duration":"16h"},
+{"busName":"Konkan Deluxe","departure":"19:00","arrival":"11:00","price":2050,"type":"AC Sleeper","rating":4.3,"seatsAvailable":12,"duration":"16h"},
+{"busName":"City2City Coach","departure":"17:30","arrival":"09:30","price":1980,"type":"AC Sleeper","rating":4.2,"seatsAvailable":20,"duration":"16h"},
+{"busName":"MegaLine Travels","departure":"21:00","arrival":"13:00","price":2150,"type":"Non AC Seater","rating":4.0,"seatsAvailable":24,"duration":"16h"},
+{"busName":"InterCity Prime","departure":"19:45","arrival":"11:45","price":2040,"type":"AC Seater","rating":4.5,"seatsAvailable":11,"duration":"16h"}
+],
+
+"Chennai-Delhi":[
+{"busName":"Capital Express","departure":"16:00","arrival":"18:00","price":2800,"type":"Non AC Seater","rating":4.4,"seatsAvailable":13,"duration":"26h"},
+{"busName":"NorthLine Deluxe","departure":"17:00","arrival":"19:00","price":2850,"type":"AC Sleeper","rating":4.3,"seatsAvailable":15,"duration":"26h"},
+{"busName":"India Rider","departure":"15:30","arrival":"17:30","price":2780,"type":"AC Sleeper","rating":4.2,"seatsAvailable":18,"duration":"26h"},
+{"busName":"National Star","departure":"16:45","arrival":"18:45","price":2880,"type":"Volvo AC","rating":4.5,"seatsAvailable":10,"duration":"26h"},
+{"busName":"Grand India Express","departure":"17:45","arrival":"19:45","price":2840,"type":"AC Seater","rating":4.3,"seatsAvailable":16,"duration":"26h"}
+],
+
+"Bangalore-Chennai":[
+{"busName":"Southern Rider","departure":"22:00","arrival":"05:30","price":950,"type":"AC Seater","rating":4.4,"seatsAvailable":17,"duration":"7h 30m"},
+{"busName":"CityLine Express","departure":"21:30","arrival":"05:00","price":920,"type":"Non AC Seater","rating":4.1,"seatsAvailable":26,"duration":"7h 30m"},
+{"busName":"Royal South Coach","departure":"23:00","arrival":"06:30","price":1000,"type":"AC Sleeper","rating":4.5,"seatsAvailable":13,"duration":"7h 30m"},
+{"busName":"SilkRoute Deluxe","departure":"22:15","arrival":"05:45","price":970,"type":"Volvo AC","rating":4.2,"seatsAvailable":20,"duration":"7h 30m"},
+{"busName":"Night Rider South","departure":"23:15","arrival":"06:30","price":980,"type":"AC Sleeper","rating":4.3,"seatsAvailable":19,"duration":"7h 15m"}
+],
+
+"Bangalore-Goa":[
+{"busName":"Konkan Night Rider","departure":"20:00","arrival":"08:00","price":1400,"type":"AC Sleeper","rating":4.3,"seatsAvailable":18,"duration":"12h"},
+{"busName":"BeachWay Express","departure":"21:00","arrival":"09:00","price":1450,"type":"Non AC Seater","rating":4.4,"seatsAvailable":16,"duration":"12h"},
+{"busName":"Sea Breeze Travels","departure":"19:30","arrival":"07:30","price":1380,"type":"AC Sleeper","rating":4.2,"seatsAvailable":21,"duration":"12h"},
+{"busName":"Holiday Link","departure":"22:15","arrival":"10:15","price":1510,"type":"AC Seater","rating":4.0,"seatsAvailable":24,"duration":"12h"},
+{"busName":"Sunset Rider","departure":"21:15","arrival":"09:15","price":1440,"type":"Volvo AC","rating":4.3,"seatsAvailable":17,"duration":"12h"}
+],
+
+"Bangalore-Delhi":[
+{"busName":"Capital Highway Express","departure":"16:00","arrival":"20:00","price":2600,"type":"AC Sleeper","rating":4.5,"seatsAvailable":12,"duration":"28h"},
+{"busName":"Northern Voyager","departure":"17:00","arrival":"21:00","price":2650,"type":"AC Seater","rating":4.3,"seatsAvailable":14,"duration":"28h"},
+{"busName":"Royal India Coach","departure":"18:00","arrival":"22:00","price":2700,"type":"Non AC Seater","rating":4.1,"seatsAvailable":20,"duration":"28h"},
+{"busName":"Golden Capital Travels","departure":"17:45","arrival":"21:45","price":2660,"type":"AC Sleeper","rating":4.4,"seatsAvailable":13,"duration":"28h"},
+{"busName":"National Voyager","departure":"16:30","arrival":"20:30","price":2610,"type":"Volvo AC","rating":4.2,"seatsAvailable":16,"duration":"28h"}
+],
+
+"Bangalore-Mumbai":[
+{"busName":"Western Metro Coach","departure":"19:00","arrival":"09:00","price":1800,"type":"AC Sleeper","rating":4.4,"seatsAvailable":15,"duration":"14h"},
+{"busName":"City Rider Express","departure":"20:00","arrival":"10:00","price":1850,"type":"Non AC Seater","rating":4.3,"seatsAvailable":17,"duration":"14h"},
+{"busName":"Galaxy Highway Bus","departure":"18:30","arrival":"08:30","price":1780,"type":"AC Seater","rating":4.2,"seatsAvailable":19,"duration":"14h"},
+{"busName":"SkyRoute Express","departure":"21:00","arrival":"11:00","price":1900,"type":"AC Sleeper","rating":4.5,"seatsAvailable":11,"duration":"14h"},
+{"busName":"Metro Cruiser","departure":"20:15","arrival":"10:15","price":1840,"type":"Volvo AC","rating":4.3,"seatsAvailable":14,"duration":"14h"}
+],
+
+"Bangalore-Hyderabad":[
+{"busName":"Deccan Night Coach","departure":"22:00","arrival":"06:00","price":900,"type":"AC Sleeper","rating":4.2,"seatsAvailable":22,"duration":"8h"},
+{"busName":"Telangana Express","departure":"21:30","arrival":"05:30","price":880,"type":"AC Seater","rating":4.3,"seatsAvailable":20,"duration":"8h"},
+{"busName":"Hyderabad Metro Bus","departure":"23:00","arrival":"07:00","price":920,"type":"Non AC Seater","rating":4.4,"seatsAvailable":18,"duration":"8h"},
+{"busName":"South Link Deluxe","departure":"22:30","arrival":"06:30","price":910,"type":"AC Sleeper","rating":4.1,"seatsAvailable":21,"duration":"8h"},
+{"busName":"Urban Deccan Coach","departure":"23:30","arrival":"07:30","price":940,"type":"Volvo AC","rating":4.3,"seatsAvailable":16,"duration":"8h"}
+],
+
+"Goa-Chennai":[
+{"busName":"Konkan Star Express","departure":"18:00","arrival":"08:00","price":1500,"type":"AC Sleeper","rating":4.3,"seatsAvailable":18,"duration":"14h"},
+{"busName":"Coastal Night Rider","departure":"19:00","arrival":"09:00","price":1550,"type":"Non AC Seater","rating":4.1,"seatsAvailable":24,"duration":"14h"},
+{"busName":"Sunset Rider","departure":"21:30","arrival":"11:30","price":1680,"type":"AC Seater","rating":4.4,"seatsAvailable":16,"duration":"14h"},
+{"busName":"Holiday Star Coach","departure":"22:00","arrival":"12:00","price":1700,"type":"Volvo AC","rating":4.2,"seatsAvailable":14,"duration":"14h"},
+{"busName":"Golden Konkan Bus","departure":"19:45","arrival":"09:45","price":1590,"type":"AC Sleeper","rating":4.5,"seatsAvailable":12,"duration":"14h"}
+],
+
+"Goa-Hyderabad":[
+{"busName":"Deccan Coastal Express","departure":"19:00","arrival":"07:00","price":1400,"type":"AC Sleeper","rating":4.3,"seatsAvailable":19,"duration":"12h"},
+{"busName":"CityLink Deccan","departure":"21:30","arrival":"09:30","price":1490,"type":"Non AC Seater","rating":4.0,"seatsAvailable":26,"duration":"12h"},
+{"busName":"Night Star Coach","departure":"22:30","arrival":"10:30","price":1520,"type":"Non AC Seater","rating":4.4,"seatsAvailable":17,"duration":"12h"},
+{"busName":"Urban Deccan Cruiser","departure":"23:00","arrival":"11:00","price":1540,"type":"AC Sleeper","rating":4.2,"seatsAvailable":15,"duration":"12h"},
+{"busName":"Highway Deccan Rider","departure":"20:45","arrival":"08:45","price":1470,"type":"Volvo AC","rating":4.3,"seatsAvailable":18,"duration":"12h"}
+],
+
+"Goa-Delhi":[
+{"busName":"Capital Coastal Express","departure":"15:00","arrival":"18:00","price":2800,"type":"Volvo AC","rating":4.5,"seatsAvailable":10,"duration":"27h"},
+{"busName":"North India Voyager","departure":"16:00","arrival":"19:00","price":2850,"type":"AC Seater","rating":4.3,"seatsAvailable":14,"duration":"27h"},
+{"busName":"Royal Capital Cruiser","departure":"17:00","arrival":"20:00","price":2900,"type":"Non AC Sleeper","rating":4.4,"seatsAvailable":13,"duration":"27h"},
+{"busName":"Golden Highway Coach","departure":"18:00","arrival":"21:00","price":2950,"type":"AC Sleeper","rating":4.2,"seatsAvailable":16,"duration":"27h"},
+{"busName":"Northern Star Express","departure":"16:45","arrival":"19:45","price":2870,"type":"AC Seater","rating":4.3,"seatsAvailable":12,"duration":"27h"}
+],
+
+"Goa-Mumbai":[
+{"busName":"Konkan City Express","departure":"20:00","arrival":"06:00","price":900,"type":"AC Sleeper","rating":4.4,"seatsAvailable":22,"duration":"10h"},
+{"busName":"Western Coast Rider","departure":"21:00","arrival":"07:00","price":950,"type":"Non AC Seater","rating":4.3,"seatsAvailable":19,"duration":"10h"},
+{"busName":"Metro Konkan Coach","departure":"22:00","arrival":"08:00","price":980,"type":"AC Sleeper","rating":4.2,"seatsAvailable":18,"duration":"10h"},
+{"busName":"SeaLink Express","departure":"19:30","arrival":"05:30","price":920,"type":"Volvo AC","rating":4.1,"seatsAvailable":24,"duration":"10h"},
+{"busName":"Urban Coast Cruiser","departure":"20:30","arrival":"06:30","price":960,"type":"Non AC Seater","rating":4.0,"seatsAvailable":28,"duration":"10h"}
+],
+
+"Goa-Bangalore":[
+{"busName":"Konkan Bangalore Express","departure":"19:00","arrival":"07:00","price":1400,"type":"Volvo AC","rating":4.3,"seatsAvailable":20,"duration":"12h"},
+{"busName":"Western Ghats Rider","departure":"20:00","arrival":"08:00","price":1450,"type":"AC Sleeper","rating":4.4,"seatsAvailable":18,"duration":"12h"},
+{"busName":"Coastal Metro Coach","departure":"21:00","arrival":"09:00","price":1500,"type":"Volvo AC","rating":4.2,"seatsAvailable":21,"duration":"12h"},
+{"busName":"SkyRoute Konkan","departure":"22:00","arrival":"10:00","price":1520,"type":"AC Seater","rating":4.5,"seatsAvailable":14,"duration":"12h"},
+{"busName":"South Coast Voyager","departure":"20:45","arrival":"08:45","price":1490,"type":"AC Sleeper","rating":4.3,"seatsAvailable":17,"duration":"12h"}
+],
+
+
+"Mumbai-Chennai":[
+{"busName":"Western Star Express","departure":"18:00","arrival":"10:00","price":2000,"type":"Non AC Seater","rating":4.2,"seatsAvailable":22,"duration":"16h"},
+{"busName":"Konkan Metro Deluxe","departure":"19:00","arrival":"11:00","price":2050,"type":"AC Sleeper","rating":4.4,"seatsAvailable":14,"duration":"16h"},
+{"busName":"Coastal City Rider","departure":"17:30","arrival":"09:30","price":1980,"type":"AC Seater","rating":4.3,"seatsAvailable":18,"duration":"16h"},
+{"busName":"Urban Galaxy Coach","departure":"18:45","arrival":"10:45","price":2080,"type":"Non AC Seater","rating":4.5,"seatsAvailable":11,"duration":"16h"},
+{"busName":"Night Highway Rider","departure":"19:45","arrival":"11:45","price":2040,"type":"Volvo AC","rating":4.3,"seatsAvailable":16,"duration":"16h"}
+],
+
+"Mumbai-Goa":[
+{"busName":"Konkan Coast Express","departure":"20:00","arrival":"06:00","price":900,"type":"Volvo AC","rating":4.4,"seatsAvailable":20,"duration":"10h"},
+{"busName":"SeaLink Night Bus","departure":"21:00","arrival":"07:00","price":950,"type":"AC Sleeper","rating":4.2,"seatsAvailable":19,"duration":"10h"},
+{"busName":"BeachRoute Deluxe","departure":"22:00","arrival":"08:00","price":980,"type":"AC Seater","rating":4.3,"seatsAvailable":17,"duration":"10h"},
+{"busName":"Western Coast Cruiser","departure":"19:30","arrival":"05:30","price":920,"type":"Non AC Seater","rating":4.1,"seatsAvailable":23,"duration":"10h"},
+{"busName":"Night Konkan Voyager","departure":"21:15","arrival":"07:15","price":980,"type":"AC Seater","rating":4.3,"seatsAvailable":18,"duration":"10h"}
+],
+
+"Mumbai-Delhi":[
+{"busName":"Capital Highway Express","departure":"16:00","arrival":"18:00","price":2500,"type":"Volvo AC","rating":4.5,"seatsAvailable":12,"duration":"26h"},
+{"busName":"Northern Metro Coach","departure":"17:00","arrival":"19:00","price":2550,"type":"Non AC Seater","rating":4.3,"seatsAvailable":14,"duration":"26h"},
+{"busName":"Royal Capital Rider","departure":"18:00","arrival":"20:00","price":2600,"type":"AC Sleeper","rating":4.4,"seatsAvailable":15,"duration":"26h"},
+{"busName":"India Grand Express","departure":"15:30","arrival":"17:30","price":2450,"type":"AC Sleeper","rating":4.2,"seatsAvailable":18,"duration":"26h"},
+{"busName":"National Voyager","departure":"16:30","arrival":"18:30","price":2510,"type":"AC Seater","rating":4.3,"seatsAvailable":16,"duration":"26h"}
+],
+
+"Mumbai-Bangalore":[
+{"busName":"Western Metro Express","departure":"19:00","arrival":"09:00","price":1800,"type":"AC Seater","rating":4.4,"seatsAvailable":17,"duration":"14h"},
+{"busName":"City Rider Deluxe","departure":"20:00","arrival":"10:00","price":1850,"type":"Non AC Seater","rating":4.3,"seatsAvailable":16,"duration":"14h"},
+{"busName":"Galaxy Highway Coach","departure":"18:30","arrival":"08:30","price":1780,"type":"AC Sleeper","rating":4.2,"seatsAvailable":19,"duration":"14h"},
+{"busName":"SkyRoute Express","departure":"21:00","arrival":"11:00","price":1900,"type":"Non AC Seater","rating":4.5,"seatsAvailable":12,"duration":"14h"},
+{"busName":"Metro Cruiser","departure":"20:15","arrival":"10:15","price":1840,"type":"Volvo AC","rating":4.3,"seatsAvailable":14,"duration":"14h"}
+],
+
+"Mumbai-Hyderabad":[
+{"busName":"Deccan City Express","departure":"20:00","arrival":"08:00","price":1400,"type":"Non AC Seater","rating":4.3,"seatsAvailable":20,"duration":"12h"},
+{"busName":"Hyderabad Night Rider","departure":"21:00","arrival":"09:00","price":1450,"type":"AC Seater","rating":4.4,"seatsAvailable":18,"duration":"12h"},
+{"busName":"Metro Deccan Deluxe","departure":"22:00","arrival":"10:00","price":1480,"type":"AC Sleeper","rating":4.2,"seatsAvailable":19,"duration":"12h"},
+{"busName":"Royal Deccan Cruiser","departure":"19:30","arrival":"07:30","price":1420,"type":"Volvo AC","rating":4.1,"seatsAvailable":21,"duration":"12h"},
+{"busName":"Southern Metro Travels","departure":"21:15","arrival":"09:15","price":1500,"type":"AC Seater","rating":4.3,"seatsAvailable":17,"duration":"12h"}
+],
+
+
+"Hyderabad-Chennai":[
+{"busName":"Deccan South Express","departure":"21:00","arrival":"07:00","price":1200,"type":"AC Seater","rating":4.3,"seatsAvailable":18,"duration":"10h"},
+{"busName":"Telangana Night Rider","departure":"22:00","arrival":"08:00","price":1250,"type":"AC Sleeper","rating":4.4,"seatsAvailable":16,"duration":"10h"},
+{"busName":"Royal Deccan Deluxe","departure":"23:00","arrival":"09:00","price":1300,"type":"Volvo AC","rating":4.6,"seatsAvailable":10,"duration":"10h"},
+{"busName":"CityLink South Coach","departure":"20:30","arrival":"06:30","price":1180,"type":"AC Sleeper","rating":4.2,"seatsAvailable":20,"duration":"10h"},
+{"busName":"Highway Star Coach","departure":"22:15","arrival":"08:15","price":1290,"type":"Non AC Seater","rating":4.5,"seatsAvailable":14,"duration":"10h"}
+],
+
+"Hyderabad-Goa":[
+{"busName":"Deccan Coast Express","departure":"19:00","arrival":"09:00","price":1500,"type":"Volvo AC","rating":4.3,"seatsAvailable":19,"duration":"14h"},
+{"busName":"Konkan Deccan Rider","departure":"20:00","arrival":"10:00","price":1550,"type":"AC Sleeper","rating":4.4,"seatsAvailable":17,"duration":"14h"},
+{"busName":"Royal Coast Deluxe","departure":"21:00","arrival":"11:00","price":1600,"type":"Non AC Seater","rating":4.2,"seatsAvailable":18,"duration":"14h"},
+{"busName":"Metro Coast Cruiser","departure":"22:00","arrival":"12:00","price":1650,"type":"AC Seater","rating":4.1,"seatsAvailable":22,"duration":"14h"},
+{"busName":"Urban Coast Travels","departure":"20:45","arrival":"10:45","price":1590,"type":"AC Seater","rating":4.3,"seatsAvailable":16,"duration":"14h"}
+],
+
+"Hyderabad-Delhi":[
+{"busName":"Capital Deccan Express","departure":"17:00","arrival":"20:00","price":2500,"type":"Volvo AC","rating":4.4,"seatsAvailable":12,"duration":"27h"},
+{"busName":"Northern Deccan Rider","departure":"18:00","arrival":"21:00","price":2550,"type":"AC Sleeper","rating":4.3,"seatsAvailable":14,"duration":"27h"},
+{"busName":"Royal Capital Cruiser","departure":"19:00","arrival":"22:00","price":2600,"type":"Non AC Sleeper","rating":4.5,"seatsAvailable":11,"duration":"27h"},
+{"busName":"India Grand Voyager","departure":"16:30","arrival":"19:30","price":2450,"type":"AC Seater","rating":4.2,"seatsAvailable":18,"duration":"27h"},
+{"busName":"National Voyager Express","departure":"18:15","arrival":"21:15","price":2590,"type":"AC Sleeper","rating":4.4,"seatsAvailable":13,"duration":"27h"}
+],
+
+"Hyderabad-Mumbai":[
+{"busName":"Deccan Metro Express","departure":"20:00","arrival":"08:00","price":1400,"type":"Non AC Seater","rating":4.3,"seatsAvailable":20,"duration":"12h"},
+{"busName":"CityLink Night Rider","departure":"21:00","arrival":"09:00","price":1450,"type":"AC Seater","rating":4.4,"seatsAvailable":18,"duration":"12h"},
+{"busName":"Royal Western Deluxe","departure":"22:00","arrival":"10:00","price":1480,"type":"Volvo AC","rating":4.2,"seatsAvailable":19,"duration":"12h"},
+{"busName":"Metro City Cruiser","departure":"19:30","arrival":"07:30","price":1420,"type":"AC Sleeper","rating":4.1,"seatsAvailable":21,"duration":"12h"},
+{"busName":"Southern Metro Travels","departure":"21:15","arrival":"09:15","price":1500,"type":"AC Sleeper","rating":4.3,"seatsAvailable":17,"duration":"12h"}
+],
+
+"Hyderabad-Bangalore":[
+{"busName":"Deccan Silicon Express","departure":"22:00","arrival":"06:00","price":900,"type":"AC Seater","rating":4.4,"seatsAvailable":21,"duration":"8h"},
+{"busName":"TechCity Night Rider","departure":"21:30","arrival":"05:30","price":880,"type":"AC Sleeper","rating":4.3,"seatsAvailable":23,"duration":"8h"},
+{"busName":"Royal Silicon Deluxe","departure":"23:00","arrival":"07:00","price":920,"type":"Non AC Seater","rating":4.5,"seatsAvailable":18,"duration":"8h"},
+{"busName":"Metro Tech Cruiser","departure":"22:30","arrival":"06:30","price":910,"type":"AC Sleeper","rating":4.2,"seatsAvailable":20,"duration":"8h"},
+{"busName":"Highway Silicon Coach","departure":"23:30","arrival":"07:30","price":940,"type":"Volvo AC","rating":4.3,"seatsAvailable":19,"duration":"8h"}
+],
+
+
+"Delhi-Chennai":[
+{"busName":"Capital South Express","departure":"16:00","arrival":"22:00","price":2600,"type":"AC Sleeper","rating":4.4,"seatsAvailable":14,"duration":"30h"},
+{"busName":"Royal South Cruiser","departure":"17:00","arrival":"23:00","price":2650,"type":"AC Sleeper","rating":4.3,"seatsAvailable":16,"duration":"30h"},
+{"busName":"Metro South Deluxe","departure":"18:00","arrival":"00:00","price":2700,"type":"AC Seater","rating":4.5,"seatsAvailable":12,"duration":"30h"},
+{"busName":"Golden Route Express","departure":"15:30","arrival":"21:30","price":2550,"type":"Non AC Seater","rating":4.2,"seatsAvailable":18,"duration":"30h"},
+{"busName":"Highway South Cruiser","departure":"16:30","arrival":"22:30","price":2610,"type":"Volvo AC","rating":4.3,"seatsAvailable":15,"duration":"30h"}
+],
+
+"Delhi-Goa":[
+{"busName":"Capital Coast Express","departure":"15:00","arrival":"18:00","price":2800,"type":"Volvo AC","rating":4.4,"seatsAvailable":13,"duration":"29h"},
+{"busName":"Royal Coast Cruiser","departure":"16:00","arrival":"19:00","price":2850,"type":"AC Sleeper","rating":4.3,"seatsAvailable":15,"duration":"29h"},
+{"busName":"Metro Coast Deluxe","departure":"17:00","arrival":"20:00","price":2900,"type":"Non AC Seater","rating":4.5,"seatsAvailable":11,"duration":"29h"},
+{"busName":"Golden Coast Voyager","departure":"14:30","arrival":"17:30","price":2750,"type":"AC Seater","rating":4.2,"seatsAvailable":17,"duration":"29h"},
+{"busName":"Highway Coast Cruiser","departure":"15:30","arrival":"18:30","price":2810,"type":"AC Sleeper","rating":4.3,"seatsAvailable":14,"duration":"29h"}
+],
+
+"Delhi-Bangalore":[
+{"busName":"Capital Silicon Express","departure":"14:00","arrival":"20:00","price":3000,"type":"AC Seater","rating":4.5,"seatsAvailable":10,"duration":"32h"},
+{"busName":"Royal Silicon Cruiser","departure":"15:00","arrival":"21:00","price":3050,"type":"Non AC Seater","rating":4.4,"seatsAvailable":12,"duration":"32h"},
+{"busName":"Metro Silicon Deluxe","departure":"16:00","arrival":"22:00","price":3100,"type":"AC Sleeper","rating":4.3,"seatsAvailable":14,"duration":"32h"},
+{"busName":"Golden Silicon Voyager","departure":"13:30","arrival":"19:30","price":2950,"type":"Volvo AC","rating":4.2,"seatsAvailable":16,"duration":"32h"},
+{"busName":"Prime Silicon Express","departure":"14:45","arrival":"20:45","price":3020,"type":"Volvo AC","rating":4.4,"seatsAvailable":13,"duration":"32h"}
+],
+
+"Delhi-Mumbai":[
+{"busName":"Capital Western Express","departure":"17:00","arrival":"12:00","price":2500,"type":"Volvo AC","rating":4.3,"seatsAvailable":18,"duration":"19h"},
+{"busName":"Royal Western Cruiser","departure":"18:00","arrival":"13:00","price":2550,"type":"AC Sleeper","rating":4.4,"seatsAvailable":15,"duration":"19h"},
+{"busName":"Metro Western Deluxe","departure":"19:00","arrival":"14:00","price":2600,"type":"AC Seater","rating":4.5,"seatsAvailable":12,"duration":"19h"},
+{"busName":"Golden Western Voyager","departure":"16:30","arrival":"11:30","price":2450,"type":"Non AC Seater","rating":4.2,"seatsAvailable":19,"duration":"19h"},
+{"busName":"Prime Western Express","departure":"17:45","arrival":"12:45","price":2520,"type":"AC Sleeper","rating":4.3,"seatsAvailable":16,"duration":"19h"}
+],
+
+"Delhi-Hyderabad":[
+{"busName":"Capital Deccan Express","departure":"18:00","arrival":"16:00","price":2300,"type":"AC Seater","rating":4.4,"seatsAvailable":14,"duration":"22h"},
+{"busName":"Royal Deccan Cruiser","departure":"19:00","arrival":"17:00","price":2350,"type":"Non AC Seater","rating":4.3,"seatsAvailable":16,"duration":"22h"},
+{"busName":"Metro Deccan Deluxe","departure":"20:00","arrival":"18:00","price":2400,"type":"AC Sleeper","rating":4.5,"seatsAvailable":12,"duration":"22h"},
+{"busName":"Golden Deccan Voyager","departure":"17:30","arrival":"15:30","price":2250,"type":"Volvo AC","rating":4.2,"seatsAvailable":18,"duration":"22h"},
+{"busName":"Prime Deccan Express","departure":"18:45","arrival":"16:45","price":2320,"type":"AC Sleeper","rating":4.3,"seatsAvailable":15,"duration":"22h"}
+]
+
+
+}
+</script>
+
+<!-- FOOTER -->
+<footer>
+
+<div class="footer-grid">
+
+<div>
+
+<h3>EVOLVE TRAVELS</h3>
+
+<p>
+Book bus tickets easily. Travel comfortably across the country with trusted operators.
+</p>
+
+</div>
+
+
+<div>
+
+<h3>Quick Links</h3>
+
+<p>Home</p>
+<p>Search Buses</p>
+<p>My Bookings</p>
+<p>About Us</p>
+
+</div>
+
+
+<div>
+
+<h3>Support</h3>
+
+<p>Help Center</p>
+<p>Cancellation Policy</p>
+<p>Refund Policy</p>
+<p>Terms & Conditions</p>
+
+</div>
+
+
+<div>
+
+<h3>Contact</h3>
+
+<p>EVOLVE TRAVELS</p>
+<p>support@evolvetravels.com</p>
+<p>Mon-Sun, 24/7 Support</p>
+
+</div>
+
+</div>
+
+<p class="copyright">
+© 2026 EVOLVE TRAVELS. All rights reserved.
+</p>
+
+</footer>
+
+<!-- JAVASCRIPT -->
+<script src="search_js.js"></script>
+
+<script>
+  const menuBtn = document.querySelector(".menu-btn");
+  const menuContainer = document.querySelector(".menu-container");
+
+  menuBtn.addEventListener("click", function () {
+    menuContainer.classList.toggle("active");
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!menuContainer.contains(e.target)) {
+      menuContainer.classList.remove("active");
+    }
+  });
+</script>
+
+</body>
+</html>
