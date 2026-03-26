@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Selection - EVOLVE TRAVELS</title>
+  <link rel="stylesheet" href="Ticket_css.css" />
+  <style>
+    .button-container {
+      padding: 20px 40px;
+      background: #f4f6f9;
+    }
+    .back-to-results {
+      display: inline-block;
+      color: #0f4768;
+      background: #fff;
+      padding: 10px 16px;
+      border: 1px solid #d1dbe6;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .cards-row {
+      display: block;
+      margin: 20px 40px;
+      width: calc(100% - 80px);
+      max-width: 1050px;
+    }
+    .bus-detail-card {
+      background: #fff;
+      border: 1px solid #d7dee8;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    .seat-grid-container {
+      background: #f2f5f9;
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      margin-top: 16px;
+    }
+    .bus-detail-card h2 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      color: #172e4d;
+    }
+    .bus-detail-card p {
+      margin: 4px 0;
+      color: #5e6f88;
+      font-size: 17px;
+    }
+    .bus-detail-card .muted {
+      color: #6f7d8f;
+      font-weight: 600;
+    }
+    .booking-summary-card {
+      background: #fff;
+      border: 1px solid #d7dee8;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .booking-summary-card h3 {
+      margin: 0 0 12px;
+      color: #172e4d;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      color: #4b5f7d;
+    }
+    .summary-row.total span,
+    .summary-row.total strong {
+      font-weight: 700;
+      color: #ff7a00;
+    }
+    .summary-divider {
+      height: 1px;
+      background: #e2e7f0;
+      margin: 12px 0;
+    }
+    #continue-booking {
+      width: 100%;
+      padding: 12px;
+      background: #ff7a00;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">EVOLVE TRAVELS</div>
+    <div class="nav-buttons">
+
+  <span class="phone">📞 +91 9080863897</span>
+
+  <div class="menu-container">
+    <button class="menu-btn">☰ Menu</button>
+
+    <div class="dropdown-menu">
+      <a href="index.html">Home</a>
+      <a href="search_html.html">Search Buses</a>
+      <a href="my_bookings.html">My Bookings</a>
+    </div>
+  </div>
+
+</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="button-container">
+      <a class="back-to-results" href="search_html.html">← Back to results</a>
+    </div>
+
+    <div class="main-content">
+  <div class="left-column">
+    <div class="bus-detail-card">
+      <h2 id="selected-bus-name">Bus details loading...</h2>
+      <p id="selected-bus-type" class="muted">Type: -</p>
+    </div>
+
+    <div class="bus-detail-card">
+     
+  <h3 id="seat-title">
+  Select Seats (<span id="count">0</span>/<span id="max-count">1</span>)
+</h3>
+      <div class="seat-legend">
+        <span><div class="box available"></div> Available</span>
+        <span><div class="box selected"></div> Selected</span>
+        <span><div class="box booked"></div> Booked</span>
+      </div>
+      <div class="seat-grid-container">
+        <div class="driver">D</div>
+        <div id="seatGrid" class="seat-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <div class="booking-summary-card">
+      <h3>Booking Summary</h3>
+      
+      <div class="summary-row">
+        <span>Route</span>
+        <strong id="summary-route">→</strong>
+      </div>
+      <div class="summary-row">
+        <span>Date</span>
+        <strong id="summary-date">-</strong>
+      </div>
+      <div class="summary-row">
+        <span>Bus</span>
+        <strong id="summary-bus">ComfortWay</strong>
+      </div>
+      <div class="summary-row">
+        <span>Time</span>
+        <strong id="summary-time">16:15 - 22:45</strong>
+      </div>
+      <div class="summary-row">
+        <span>Seats</span>
+        <strong id="summary-seats">None selected</strong>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-row">
+        <span>Price per seat</span>
+        <strong id="summary-price">$0</strong>
+      </div>
+
+      <div class="total-row">
+        <span class="total-label">Total</span>
+        <span class="total-amount" id="total-price">$0.00</span>
+      </div>
+
+      <button id="continue-booking">Continue to Booking</button>
+    </div>
+  </div>
+</div>
+
+
+
+    </div>
+  </main>
+
+  <script>
+  
+  // --- Get URL params from previous Search Buses page ---
+  function getParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      busName: params.get('busName') || 'Unknown Bus',
+      route: params.get('route') ? params.get('route').replace('-', ' → ') : '-',
+      departure: params.get('departure') || '-',
+      arrival: params.get('arrival') || '-',
+      price: params.get('price') ? parseFloat(params.get('price')) : 0, // numeric
+      type: params.get('type') || '-',
+      passengers: params.get('passengers') || '1',
+      date: params.get('date') || '-'
+    };
+  }
+
+  const data = getParams();
+
+  // --- Populate bus card and booking summary ---
+  document.getElementById('selected-bus-name').textContent = `${data.busName} - ${data.route}`;
+  document.getElementById('selected-bus-type').textContent = `${data.type} → ${data.departure} – ${data.arrival}`;
+
+  document.getElementById('summary-bus').textContent = data.busName;
+  document.getElementById('summary-route').textContent = data.route;
+  document.getElementById('summary-date').textContent = data.date;
+  document.getElementById('summary-price').textContent = `₹${data.price.toFixed(2)}`;
+
+  // --- Seat selection logic ---
+  const totalSeats = 40;
+  const maxSelection = parseInt(data.passengers);
+  let selectedSeats = JSON.parse(localStorage.getItem("selectedSeats")) || [];
+  document.getElementById("max-count").innerText = maxSelection;
+  const bookedSeats = [3,7,12,15,21,25,33,37]; // Example booked seats
+  const grid = document.getElementById("seatGrid");
+  const count = document.getElementById("count");
+  const summarySeats = document.getElementById("summary-seats");
+  const totalPrice = document.getElementById("total-price");
+
+  function createSeats() {
+  for (let i = 1; i <= totalSeats; i++) {
+
+    const seat = document.createElement("div");
+    seat.classList.add("seat");
+    seat.innerText = i;
+
+    if (bookedSeats.includes(i)) {
+      seat.classList.add("booked");
+    } else {
+
+      // ✅ ADD THIS PART (restore selected seats)
+      if (selectedSeats.includes(i)) {
+        seat.classList.add("selected");
+      }
+
+      // existing click event
+      seat.addEventListener("click", () => selectSeat(seat, i));
+    }
+
+    grid.appendChild(seat);
+  }
+
+  // ✅ ADD THIS LINE AT END OF FUNCTION
+  count.innerText = selectedSeats.length;
+}
+
+  function selectSeat(seat, number) {
+  if (seat.classList.contains("selected")) {
+    seat.classList.remove("selected");
+    selectedSeats = selectedSeats.filter(s => s !== number);
+  } else {
+    if (selectedSeats.length >= maxSelection) {
+      alert(`You can select only ${maxSelection} seat(s)`);
+      return;
+    }
+    seat.classList.add("selected");
+    selectedSeats.push(number);
+  }
+
+  // ✅ update count
+  count.innerText = selectedSeats.length;
+
+  // ✅ update booking summary seats
+  document.getElementById("summary-seats").innerText =
+    selectedSeats.length > 0 ? selectedSeats.join(", ") : "None selected";
+
+  // ✅ update total price
+  document.getElementById("total-price").innerText =
+    `₹${(selectedSeats.length * data.price).toFixed(2)}`;
+}
+
+    // --- Update seat count ---
+    count.innerText = selectedSeats.length;
+    summarySeats.textContent = selectedSeats.length > 0 ? selectedSeats.join(", ") : "None selected";
+
+    // --- Update total price dynamically ---
+    totalPrice.textContent = `₹${(selectedSeats.length * data.price).toFixed(2)}`;
+  
+
+  // --- Initialize seats ---
+  createSeats();
+
+ 
+  
+</script>
+
+
+
+  </script>
+<script>
+  const menuBtn = document.querySelector(".menu-btn");
+  const menuContainer = document.querySelector(".menu-container");
+
+  menuBtn.addEventListener("click", function () {
+    menuContainer.classList.toggle("active");
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!menuContainer.contains(e.target)) {
+      menuContainer.classList.remove("active");
+    }
+  });
+  
+document.getElementById("continue-booking").addEventListener("click", function () {
+
+  if (selectedSeats.length === 0) {
+    alert("Please select at least one seat");
+    return;
+  }
+
+  const data = getParams();
+
+  // ✅ SAVE DATA
+  localStorage.setItem("selectedSeats", JSON.stringify(selectedSeats));
+  localStorage.setItem("busName", data.busName);
+  localStorage.setItem("route", data.route);
+  localStorage.setItem("date", data.date);
+  localStorage.setItem("departure", data.departure);
+  localStorage.setItem("arrival", data.arrival);
+  localStorage.setItem("type", data.type);
+  localStorage.setItem("passengers", data.passengers);
+  localStorage.setItem("price", data.price);
+
+  // ✅ GO TO NEXT PAGE
+  window.location.href = "Passenger.html";
+});
+</script>
+</script>
+<!-- FOOTER --> <footer> <div class="footer-grid"> <div> <h3>EVOLVE TRAVELS</h3> <p> Book bus tickets easily. Travel comfortably across the country with trusted operators. </p> </div> <div> <h3>Quick Links</h3> <p>Home</p> <p>Search Buses</p> <p>My Bookings</p> <p>About Us</p> </div> <div> <h3>Support</h3> <p>Help Center</p> <p>Cancellation Policy</p> <p>Refund Policy</p> <p>Terms & Conditions</p> </div> <div> <h3>Contact</h3> <p>044 - 5821 - 4605</p> <p>support@evolvetravels.com</p> <p>Mon-Sun, 24/7 Support</p> </div> </div> <p class="copyright"> © 2026 EVOLVE TRAVELS. All rights reserved. </p> </footer>
+</body>
+</html>
